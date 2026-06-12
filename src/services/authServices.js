@@ -76,4 +76,14 @@ export const registerService = async (data, reset, checkSession) => {
     }
 }
 
-export const logoutService = async () => {}
+export const logoutService = async () => {
+    try {
+        const response = await axios.post(`${API_URL}/logout`)
+        return response.data
+    }catch (error) {
+  throw new Error(
+    error.response?.message || 'Error al cerrar sesión',
+    { cause: error }
+  )
+}
+}
