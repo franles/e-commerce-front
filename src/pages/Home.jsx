@@ -1,5 +1,5 @@
-import CardProduct from '../components/CardProduct/cardProduct.jsx'
-import { useProduct } from '../context/ProductContext.jsx'
+import CardProduct from '../components/CardProduct/CardProduct.jsx'
+import { useProduct } from '../context/productContextData.js'
 
 const Home = () => {
     const { products, productsLoading, error } = useProduct()

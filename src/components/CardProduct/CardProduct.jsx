@@ -1,11 +1,11 @@
 import { Link } from 'react-router'
-import { useUser } from '../../context/userContextData.ts'
+//import { useUser } from '../../context/userContextData.ts'
 import { FaShoppingCart } from 'react-icons/fa'
 
 const CardProduct = ({
     product: { _id, name, price, imageUrl, description, stock },
 }) => {
-    const { isAuthenticated } = useUser()
+    //const { isAuthenticated } = useUser()
 
     return (
         <div className="card bg-base-100 w-80 lg:w-[30%] shadow-lg">

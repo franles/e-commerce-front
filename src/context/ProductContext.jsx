@@ -1,22 +1,10 @@
-// TODO:
-// Resolver advertencias de ESLint:
-// - react-refresh/only-export-components
-// - variables sin uso
-// - revisar set-state-in-effect
 
-import {
-    useState,
-    useEffect,
-    useCallback,
-    useContext,
-    createContext,
-} from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import axios from 'axios'
+import { ProductContext } from './productContextData.js'
 
 axios.defaults.withCredentials = true
 const API_URL = import.meta.env.VITE_BACKEND_URL + '/products'
-
-export const ProductContext = createContext({})
 
 export const ProductContextProvider = ({ children }) => {
     const [products, setProducts] = useState([])
@@ -24,6 +12,7 @@ export const ProductContextProvider = ({ children }) => {
     const [productsLoading, setProductsLoading] = useState(false)
     const [productLoading, setProductLoading] = useState(false)
     const [error, setError] = useState(null)
+    const hasRunRef = useRef(false)
 
     //Funcion para obtener productos
     const getProducts = useCallback(async () => {
@@ -53,7 +42,10 @@ export const ProductContextProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        getProducts()
+        if (!hasRunRef.current) {
+            hasRunRef.current = true
+            getProducts()
+        }
     }, [getProducts])
 
     const value = {
@@ -74,4 +66,3 @@ export const ProductContextProvider = ({ children }) => {
 }
 
 //Hook personalizado
-export const useProduct = () => useContext(ProductContext)
