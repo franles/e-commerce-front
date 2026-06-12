@@ -38,6 +38,20 @@ export const ProductContextProvider = ({ children }) => {
         }
     }, [])
 
+    //funcion para obtener productos con id
+    const getProductById = useCallback(async (id) => {
+        setProductLoading(true)
+        setProduct({})
+        try {
+            const response = await axios.get(`${API_URL}/${id}`)
+            setProduct(response.data)
+        } catch (error) {
+            setError(error.message || 'Error al obtener el producto')
+        } finally {
+            setProductLoading(false)
+        }
+    }, [])
+
     useEffect(() => {
         getProducts()
     }, [getProducts])
@@ -49,6 +63,7 @@ export const ProductContextProvider = ({ children }) => {
         productLoading,
         error,
         getProducts,
+        getProductById,
     }
 
     return (

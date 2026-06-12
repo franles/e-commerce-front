@@ -10,7 +10,7 @@ const Home = () => {
                 E-COMERCE
             </h1>
             <p className="text-center mb-4">Elegí tu producto</p>
-            <div>
+            <div className="flex flex-wrap gap-5 justify-center">
                 {productsLoading ? (
                     <div className="loading loading-spinner"></div>
                 ) : error ? (

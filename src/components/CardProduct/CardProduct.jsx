@@ -8,7 +8,7 @@ const CardProduct = ({
     const { isAuthenticated } = useUser()
 
     return (
-        <div className="card bg-base-100 w-80 shadow-lg">
+        <div className="card bg-base-100 w-80 lg:w-[30%] shadow-lg">
             <figure>
                 <img
                     className="aspect-[9/9] objet-cover"
@@ -22,7 +22,7 @@ const CardProduct = ({
                 <p>{description}</p>
                 <div className="card-actions justify-between mt-4">
                     <Link
-                        to={`/product/${_id}`}
+                        to={`/detailProduct/${_id}`}
                         className="btn btn-info btn-sm md:btn-md"
                     >
                         Ver Detalles
