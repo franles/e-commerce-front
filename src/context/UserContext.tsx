@@ -1,9 +1,15 @@
-import { useState, useEffect } from 'react'
-import { getProfileService } from '../services/authServices'
-import { UserContext } from './userContextData'
+import { useState, useEffect, ReactNode } from 'react'
+import { getProfileService } from '../services/authServices.js'
+import { UserContext } from './userContextData.ts'
+import type { UserInfo } from '../types/user'
 
-export const UserContextProvider = ({ children }) => {
-    const [userInfo, setUserInfo] = useState({})
+interface UserContextProviderProps {
+    children: ReactNode
+}
+
+export const UserContextProvider = ({ children }: UserContextProviderProps) => {
+    //const [userInfo, setUserInfo] = useState({})
+    const [userInfo, setUserInfo] = useState<UserInfo>({} as UserInfo)
     const [loading, setLoading] = useState(true)
 
     //funcion para verificar la sesion del usuario(verifica access token)

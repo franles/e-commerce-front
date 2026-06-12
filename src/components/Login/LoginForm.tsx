@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { loginService } from '../../services/authServices'
+import { useUser } from '../../context/userContextData'
+import { Navigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 
 type LoginFormValues = {
     email: string
@@ -15,18 +19,27 @@ const LoginForm = () => {
         reset,
     } = useForm<LoginFormValues>({ mode: 'onChange' })
 
+    const { setUserInfo, userInfo } = useUser()
     const [showPassword, setShowPassword] = useState(false)
+    const [redirect, setRedirect] = useState(false)
 
-    const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-        console.log(data)
-        reset()
+    const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+        const result = await loginService(data, reset, setRedirect, setUserInfo)
+
+        if (result?.success) {
+            toast.success(result?.message || 'Inicio de sesión exitoso')
+        } else {
+            toast.error(result?.message || 'Error al iniciar sesión')
+        }
     }
 
-    // const onSubmit = (data) => {
-    //     console.log(data)
-    //     reset()
-    //     //logueando al user
-    // }
+    if (redirect && userInfo.isAdmin) {
+        // return <Navigate to={"/admin/dashboard"} />
+    }
+
+    if (redirect && !userInfo.isAdmin) {
+        return <Navigate to={'/'} />
+    }
 
     return (
         <form
