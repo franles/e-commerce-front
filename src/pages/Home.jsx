@@ -1,5 +1,28 @@
+import CardProduct from '../components/CardProduct/cardProduct.jsx'
+import { useProduct } from '../context/ProductContext.jsx'
+
 const Home = () => {
-    return <h1>Pagina Home</h1>
+    const { products, productsLoading, error } = useProduct()
+
+    return (
+        <div>
+            <h1 className="text-4xl font-bold text-center mt-7 mb-2 uppercase">
+                E-COMERCE
+            </h1>
+            <p className="text-center mb-4">Elegí tu producto</p>
+            <div>
+                {productsLoading ? (
+                    <div className="loading loading-spinner"></div>
+                ) : error ? (
+                    <p>Error al cargar los productos</p>
+                ) : (
+                    products.map((product) => (
+                        <CardProduct key={product._id} product={product} />
+                    ))
+                )}
+            </div>
+        </div>
+    )
 }
 
 export default Home
