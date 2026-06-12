@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useUser } from '../../context/userContextData'
 import { useForm } from 'react-hook-form'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { registerService } from '../../services/AuthServices'
+import { registerService } from '../../services/authServices'
 import { Navigate } from 'react-router'
 import { toast } from 'react-hot-toast'
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react'
 import { getProfileService } from '../services/authServices.js'
-import { UserContext } from './userContextData.ts'
+import { UserContext } from './userContextData'
 import type { UserInfo } from '../types/user'
 
 interface UserContextProviderProps {
