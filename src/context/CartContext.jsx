@@ -1,11 +1,11 @@
 ﻿import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useUser } from './UserContext'
+import { useUser } from './userContextData.js'
 import { CartContext } from './cartContextData.js'
 import {
     addToCartService,
     getCartService,
     updateCartService,
-    removeFromCartService,
+    deleteCartService,
     clearCartService,
 } from '../services/cartServices'
 import { toast } from 'react-hot-toast'
@@ -241,7 +241,7 @@ export const CartContextProvider = ({ children }) => {
         if (authenticated && userId) {
             try {
                 setLoading(true)
-                await removeFromCartService(userId, productId)
+                await deleteCartService(userId, productId)
                 await loadCart()
                 toast.success('Producto eliminado del carrito')
             } catch (error) {
