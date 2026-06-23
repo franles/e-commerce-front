@@ -2,14 +2,20 @@ import { useProduct } from '../context/productContextData.js'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { FaShoppingCart } from 'react-icons/fa'
+import { useCart } from '../context/cartContextData.js'
 
 const DetailProduct = () => {
     const { id } = useParams()
     const { getProductById, product, productLoading } = useProduct()
-
+    const { addToCart, openModal } = useCart()
     useEffect(() => {
         getProductById(id)
     }, [id, getProductById])
+
+    const handleAddToCart = async () => {
+        await addToCart(product)
+        openModal()
+    }
 
     return (
         <>
@@ -33,7 +39,7 @@ const DetailProduct = () => {
                         <p className="mt-2">
                             Unidades en stock: {product.stock}
                         </p>
-                        <button className="btn btn-success mt-2 md:mt-auto md:btn-lg">
+                        <button onClick={handleAddToCart} className="btn btn-success mt-2 md:mt-auto md:btn-lg">
                             <FaShoppingCart size={16} />
                             Agregar al carrito
                         </button>
