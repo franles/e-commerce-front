@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback, useRef } from 'react'
 import axios from 'axios'
 import { ProductContext } from './productContextData.js'
@@ -41,6 +40,108 @@ export const ProductContextProvider = ({ children }) => {
         }
     }, [])
 
+    //funcion para actualizar un producto
+    const updateProduct = useCallback(async (id, data) => {
+        const cleanData = {
+            name: data.name,
+            description: data.description,
+            price: Number(data.price),
+            stock: Number(data.stock),
+            imageUrl: data.imageUrl,
+        }
+
+        try {
+            const response = await axios.put(`${API_URL}/${id}`, cleanData, {
+                withCredentials: true,
+            })
+            if (response.status === 200) {
+                //actualizar el producto indiuvidual
+                setProduct(response.data)
+                //actualizar el producto en la lista de productos
+                setProducts((prevProducts) =>
+                    prevProducts.map((p) => (p._id === id ? response.data : p)),
+                )
+                return {
+                    success: true,
+                    message: 'Producto actualizado correctamente',
+                }
+            }
+        } catch (error) {
+            setError(error.message || 'Error al actualizar el producto')
+            return {
+                success: false,
+                message: 'Error al actualizar el producto',
+            }
+        } finally {
+            setProductsLoading(false)
+            setProductLoading(false)
+        }
+    }, [])
+
+    //funcion para crear un producto
+    const createProduct = useCallback(async (data) => {
+        const cleanData = {
+            name: data.name,
+            description: data.description,
+            price: Number(data.price),
+            stock: Number(data.stock),
+            imageUrl: data.imageUrl,
+        }
+
+        try {
+            const response = await axios.post(API_URL, cleanData, {
+                withCredentials: true,
+            })
+            if (response.status === 201) {
+                setProducts((prevProducts) => [
+                    ...prevProducts,
+                    response.data.product,
+                ])
+
+                return {
+                    success: true,
+                    message: response.data.message,
+                }
+            }
+        } catch (error) {
+            console.log(JSON.stringify(error.response.data, null, 2));
+
+            //setError(error.message || 'Error al crear el producto')
+            return {
+                success: false,
+                message: error.message || 'Error al crear el producto',
+            }
+        } finally {
+            setProductLoading(false)
+        }
+    }, [])
+
+    const deleteProduct = useCallback(async (id) => {
+        try {
+            const response = await axios.delete(`${API_URL}/${id}`, {
+                withCredentials: true,
+            })
+            if (response.status === 200) {
+                setProducts((prevProducts) =>
+                    prevProducts.filter((p) => p._id !== id),
+                )
+
+                return {
+                    success: true,
+                    message: 'Producto eliminado correctamente',
+                }
+            }
+        } catch (error) {
+            setError(error.message || 'Error al eliminar el producto')
+            return {
+                success: false,
+                message: 'Error al eliminar el producto',
+            }
+        } finally {
+            setProductsLoading(false)
+        }
+    }, [])
+
     useEffect(() => {
         if (!hasRunRef.current) {
             hasRunRef.current = true
@@ -56,6 +157,9 @@ export const ProductContextProvider = ({ children }) => {
         error,
         getProducts,
         getProductById,
+        updateProduct,
+        createProduct,
+        deleteProduct,
     }
 
     return (
